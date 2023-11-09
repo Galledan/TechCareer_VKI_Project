@@ -1,10 +1,21 @@
 import React, { useState } from "react";
-
+import api from "../service/UserService";
 function Form() {
 
   const [bmi, setBmi] = useState();
+  const [name, setName] = useState();
+  const [surname, setSurname] = useState();
   const [height, setHeight] = useState();
   const [weight, setWeight] = useState();
+
+  const handleName = (e) => {
+    setName(e.target.value)
+  }
+
+  const handleSurname = (e) => {
+    setSurname(e.target.value)
+  }
+
 
   const handleWeight = (e) => {
     setWeight(e.target.value)
@@ -14,10 +25,25 @@ function Form() {
     setHeight(e.target.value)
   }
 
-  const handleSubmit = () => {
-    // Calculating BMI
-    const calc = (weight / ((height*height)/10000)).toFixed(2);
-    setBmi("VKI değeriniz: " + calc)
+  const calculateBMI = () => {
+   // Calculating BMI
+   const calc = (weight / ((height*height)/10000)).toFixed(2);
+   setBmi("VKI değeriniz: " + calc)
+  }
+
+  const addUser = async (i,e) => {
+    // Adding to DB
+    let user = {firstName: name, lastName: surname, kgValue: weight, lengthValue: height}
+    await api.post("", user).then((res) => {
+      console.log(res.data);
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    calculateBMI();
+    addUser()
+    
   }
 
   return (
@@ -33,9 +59,9 @@ function Form() {
               name="uname"
               id="uname"
               placeholder="Adınız ..."
-              value="Onur"
               required
               autofocus
+              onChange={handleName}
               title="Adınızı giriniz !"
             />
           </div>
@@ -47,8 +73,8 @@ function Form() {
               name="usurname"
               id="usurname"
               placeholder="Soyadınız ..."
-              value="Çelikler"
               required
+              onChange={handleSurname}
               title="Soyadınızı giriniz !"
             />
           </div>
