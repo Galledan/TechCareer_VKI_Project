@@ -41,7 +41,7 @@ public class UserController {
 
     //Updating User
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(Long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
         User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not Found with Id: " + id));
 
         user.setFirstName(userDetails.getFirstName());

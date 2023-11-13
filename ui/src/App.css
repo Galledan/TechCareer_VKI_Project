@@ -1,0 +1,48 @@
+:root {
+    --template_color: black;
+    --template_bg_color: rgb(0, 217, 255);
+}
+
+.App {
+    background-color: var(--template_bg_color);
+    height: 100vh;
+    width: 100%;
+}
+
+header{
+    background-color: black;
+    width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 50px;
+}
+
+header p {
+    margin: 0;
+}
+
+.navs{
+    width: 50%;
+    display: flex;
+    gap: 50px;
+
+    
+}
+
+.navs button {
+    border: 0px;
+    background-color: black;
+    color: white;
+    height: 50px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    width: 100%;
+    height: 100vh;
+}
