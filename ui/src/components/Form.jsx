@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import api from "../service/UserService";
 import "../styles/form.css";
+import { useTranslation } from "react-i18next";
+
 function Form() {
   const [bmi, setBmi] = useState();
   const [name, setName] = useState();
@@ -8,6 +10,8 @@ function Form() {
   const [height, setHeight] = useState();
   const [weight, setWeight] = useState();
   const [result, setResult] = useState();
+
+  const { t, i18n } = useTranslation();
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -28,22 +32,22 @@ function Form() {
   const calculateBMI = () => {
     // Calculating BMI
     const calc = (weight / ((height * height) / 10000)).toFixed(2);
-    setBmi("VKI değeriniz: " + calc);
+    setBmi(t("bmi") + calc);
 
     // Output depending on BMI
 
     if (calc < 18.5) {
-      setResult("İdeal kilonun altındasınız!");
+      setResult(t("result1"));
     } else if (calc < 25 && calc >= 18.5) {
-      setResult("İdeal kilodasınız tebrikler!");
+      setResult(t("result2"));
     } else if (calc < 30 && calc >= 25) {
-      setResult("Fazla kilolusunuz!");
+      setResult(t("result3"));
     } else if (calc < 35 && calc >= 30) {
-      setResult("1. dereceden obezitesiniz!");
+      setResult(t("result4"));
     } else if (calc < 40 && calc >= 35) {
-      setResult("2. dereceden obezitesiniz!");
+      setResult(t("result5"));
     } else {
-      setResult("3. dereceden obezitesiniz!");
+      setResult(t("result6"));
     }
   };
 
@@ -63,71 +67,65 @@ function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     calculateBMI();
-    addUser()
+    addUser();
   };
 
   return (
     <div className="form-container">
       <div className="row">
-        <div className="form col-md-7">
+        <form className="form col-md-7" onSubmit={handleSubmit}>
           <div>
-            <label for="uname">Adınız:</label>
+            <label htmlFor="uname">{t("name")}</label>
             <input
               type="text"
-              class="input_class"
+              className="input_class"
               name="uname"
               id="uname"
-              placeholder="Adınız ..."
               required
-              autofocus
+              autoFocus
               onChange={handleName}
-              title="Adınızı giriniz !"
+              value={name}
             />
           </div>
           <div>
-            <label for="usurname">Soyadınız:</label>
+            <label htmlFor="usurname">{t("surname")}</label>
             <input
               type="text"
-              class="input_class"
+              className="input_class"
               name="usurname"
               id="usurname"
-              placeholder="Soyadınız ..."
               required
               onChange={handleSurname}
-              title="Soyadınızı giriniz !"
+              value={surname}
             />
           </div>
           <div>
-            <label for="uweight">(kg)Kilonuz:</label>
+            <label htmlFor="uweight">{t("weight")}</label>
             <input
               type="text"
-              class="input_class"
+              className="input_class"
               name="uweight"
               id="uweight"
-              placeholder="Kilonuz ..."
               required
               onChange={handleWeight}
-              title="Kilonuzu giriniz !"
+              value={weight}
             />
           </div>
           <div>
-            <label for="ulength">(cm)Boyunuz:</label>
+            <label htmlFor="ulength">{t("height")}</label>
             <input
               type="text"
-              class="input_class"
+              className="input_class"
               name="ulength"
               id="ulength"
-              placeholder="Boyunuz ..."
               required
               onChange={handleHeight}
-              title="Boyunuzu giriniz !"
+              value={height}
             />
           </div>
 
-          <button onClick={handleSubmit} className="btn btn-primary">
-            Submit
-          </button>
-        </div>
+          <button className="btn btn-primary">{t("submit")}</button>
+        </form>
       </div>
       <p>{bmi}</p>
       <p>{result}</p>

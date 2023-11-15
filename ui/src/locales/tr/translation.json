@@ -1,0 +1,23 @@
+{
+    "welcome": "Vücut Kütle İndeksi hesaplayacısına hoş geldiniz",
+    "please": "VKI'nızı hesaplamak için aşağıya gerekli bilgileri giriniz",
+    "name": "Adınız:",
+    "surname": "Soyadınız:",
+    "weight": "Kilonuz(kg):",
+    "height": "Boyunuz(cm):",
+    "submit": "Gönder",
+    "right": "Tüm hakları saklıdır",
+    "users": "Kullanıcılar",
+    "name2": "İsim",
+    "surname2": "Soyisim",
+    "weight2": "Kilo",
+    "height2": "Boy",
+    "action": "Aksiyonlar",
+    "del": "Sil",
+    "upt": "Güncelle",
+    "upt2": "Kullanıcı Güncelleme",
+    "list": "Liste",
+    "app": "VKI Uygulaması",
+    "close": "Kapa",
+    "save": "Kaydet"
+}

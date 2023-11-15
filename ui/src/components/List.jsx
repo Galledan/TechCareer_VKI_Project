@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../service/UserService";
 import "../styles/list.css";
+import { useTranslation } from "react-i18next";
 
 function List() {
   const [users, setUsers] = useState([]);
@@ -11,6 +12,8 @@ function List() {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
 
+  const { t, i18n } = useTranslation();
+
   const deleteUser = async (id) => {
     await api.delete("/" + id.toString());
     getUsers();
@@ -20,23 +23,27 @@ function List() {
     try {
       const response = await api.get("/" + id.toString());
       setUser(response.data);
-      // Set form values with the user data
       setName(response.data.firstName);
       setSurname(response.data.lastName);
       setWeight(response.data.kgValue);
       setHeight(response.data.lengthValue);
     } catch (error) {
       console.error("Error fetching user:", error);
-      console.log("API response:", error.response); // Log the API response
+      console.log("API response:", error.response);
     }
   };
-  
+
   const updateUser = async (id) => {
-    let updatedUser = { firstName: name, lastName: surname, kgValue: weight, lengthValue: height };
+    let updatedUser = {
+      firstName: name,
+      lastName: surname,
+      kgValue: weight,
+      lengthValue: height,
+    };
     await api.put("/" + id.toString(), updatedUser);
-  
+
+    getUsers();
   };
-  
 
   const getUsers = async () => {
     try {
@@ -68,46 +75,48 @@ function List() {
   }, []);
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>İsim</th>
-            <th>Soyisim</th>
-            <th>Kilo</th>
-            <th>Boy</th>
-            <th>Aksiyonlar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users &&
-            users.map((u, i) => (
-              <tr key={i}>
-                <td>{u.firstName}</td>
-                <td>{u.lastName}</td>
-                <td>{u.kgValue}</td>
-                <td>{u.lengthValue}</td>
-                <td className="table-buttons">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteUser(u.id)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="btn btn-secondary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={() => getUser(u.id)}
-                  >
-                    Update
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-
+    <div className="list-container">
+      <h1>{t("users")}</h1>
+      <div className="row">
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>{t("name2")}</th>
+              <th>{t("surname2")}</th>
+              <th>{t("weight2")}</th>
+              <th>{t("height2")}</th>
+              <th>{t("action")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users &&
+              users.map((u, i) => (
+                <tr key={i}>
+                  <td>{u.firstName}</td>
+                  <td>{u.lastName}</td>
+                  <td>{u.kgValue}</td>
+                  <td>{u.lengthValue}</td>
+                  <td className="table-buttons">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => deleteUser(u.id)}
+                    >
+                      {t("del")}
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => getUser(u.id)}
+                    >
+                      {t("upt")}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       <div
         className="modal fade"
         id="exampleModal"
@@ -119,7 +128,7 @@ function List() {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Güncelleme
+              {t("upt2")}
               </h1>
               <button
                 type="button"
@@ -130,59 +139,51 @@ function List() {
             </div>
             <div className="modal-body">
               <div>
-                <label htmlFor="uname">Adınız:</label>
+                <label htmlFor="uname">{t("name")}</label>
                 <input
                   type="text"
                   className="input_class"
                   name="uname"
                   id="uname"
-                  placeholder="Adınız ..."
                   required
                   autoFocus
                   onChange={handleName}
-                  title="Adınızı giriniz !"
                   value={name}
                 />
               </div>
               <div>
-                <label htmlFor="usurname">Soyadınız:</label>
+                <label htmlFor="usurname">{t("surname")}</label>
                 <input
                   type="text"
                   className="input_class"
                   name="usurname"
                   id="usurname"
-                  placeholder="Soyadınız ..."
                   required
                   onChange={handleSurname}
-                  title="Soyadınızı giriniz !"
                   value={surname}
                 />
               </div>
               <div>
-                <label htmlFor="uweight">(kg)Kilonuz:</label>
+                <label htmlFor="uweight">{t("weight")}</label>
                 <input
                   type="text"
                   className="input_class"
                   name="uweight"
                   id="uweight"
-                  placeholder="Kilonuz ..."
                   required
                   onChange={handleWeight}
-                  title="Kilonuzu giriniz !"
                   value={weight}
                 />
               </div>
               <div>
-                <label htmlFor="ulength">(cm)Boyunuz:</label>
+                <label htmlFor="ulength">{t("height")}</label>
                 <input
                   type="text"
                   className="input_class"
                   name="ulength"
                   id="ulength"
-                  placeholder="Boyunuz ..."
                   required
                   onChange={handleHeight}
-                  title="Boyunuzu giriniz !"
                   value={height}
                 />
               </div>
@@ -193,14 +194,15 @@ function List() {
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+                {t("close")}
               </button>
               <button
                 type="button"
                 className="btn btn-primary"
                 onClick={() => updateUser(user.id)}
+                data-bs-dismiss="modal"
               >
-                Save changes
+                {t("save")}
               </button>
             </div>
           </div>
